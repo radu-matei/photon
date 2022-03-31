@@ -7,12 +7,6 @@ use image::imageops::FilterType;
 use image::DynamicImage::ImageRgba8;
 use image::RgbaImage;
 use image::{GenericImageView, ImageBuffer};
-use wasm_bindgen::prelude::*;
-
-#[cfg(target_arch = "wasm32")]
-use wasm_bindgen::{Clamped, JsCast};
-#[cfg(target_arch = "wasm32")]
-use web_sys::{HtmlCanvasElement, ImageData};
 
 /// Crop an image.
 ///
@@ -31,7 +25,7 @@ use web_sys::{HtmlCanvasElement, ImageData};
 /// let cropped_img: PhotonImage = crop(&mut img, 0_u32, 0_u32, 500_u32, 800_u32);
 /// // Write the contents of this image in JPG format.
 /// ```
-#[wasm_bindgen]
+
 pub fn crop(
     photon_image: &mut PhotonImage,
     x1: u32,
@@ -56,48 +50,6 @@ pub fn crop(
     }
 }
 
-#[cfg(target_arch = "wasm32")]
-#[wasm_bindgen]
-pub fn crop_img_browser(
-    source_canvas: HtmlCanvasElement,
-    width: f64,
-    height: f64,
-    left: f64,
-    top: f64,
-) -> HtmlCanvasElement {
-    let document = web_sys::window().unwrap().document().unwrap();
-    let dest_canvas = document
-        .create_element("canvas")
-        .unwrap()
-        .dyn_into::<web_sys::HtmlCanvasElement>()
-        .unwrap();
-
-    dest_canvas.set_width(width as u32);
-    dest_canvas.set_height(height as u32);
-
-    let ctx = dest_canvas
-        .get_context("2d")
-        .unwrap()
-        .unwrap()
-        .dyn_into::<web_sys::CanvasRenderingContext2d>()
-        .unwrap();
-
-    ctx.draw_image_with_html_canvas_element_and_sw_and_sh_and_dx_and_dy_and_dw_and_dh(
-        &source_canvas,
-        left,
-        top,
-        width,
-        height,
-        0.0,
-        0.0,
-        width,
-        height,
-    )
-    .unwrap();
-
-    dest_canvas
-}
-
 /// Flip an image horizontally.
 ///
 /// # Arguments
@@ -113,7 +65,7 @@ pub fn crop_img_browser(
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// fliph(&mut img);
 /// ```
-#[wasm_bindgen]
+
 pub fn fliph(photon_image: &mut PhotonImage) {
     let img = helpers::dyn_image_from_raw(photon_image);
 
@@ -146,7 +98,7 @@ pub fn fliph(photon_image: &mut PhotonImage) {
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// flipv(&mut img);
 /// ```
-#[wasm_bindgen]
+
 pub fn flipv(photon_image: &mut PhotonImage) {
     let img = helpers::dyn_image_from_raw(photon_image);
 
@@ -165,7 +117,6 @@ pub fn flipv(photon_image: &mut PhotonImage) {
     photon_image.raw_pixels = raw_pixels;
 }
 
-#[wasm_bindgen]
 pub enum SamplingFilter {
     Nearest = 1,
     Triangle = 2,
@@ -191,54 +142,6 @@ fn filter_type_from_sampling_filter(sampling_filter: SamplingFilter) -> FilterTy
 /// * `width` - New width.
 /// * `height` - New height.
 /// * `sampling_filter` - Nearest = 1, Triangle = 2, CatmullRom = 3, Gaussian = 4, Lanczos3 = 5
-#[cfg(target_arch = "wasm32")]
-#[wasm_bindgen]
-pub fn resize_img_browser(
-    photon_img: &PhotonImage,
-    width: u32,
-    height: u32,
-    sampling_filter: SamplingFilter,
-) -> HtmlCanvasElement {
-    let sampling_filter = filter_type_from_sampling_filter(sampling_filter);
-    let dyn_img = helpers::dyn_image_from_raw(photon_img);
-    let resized_img = ImageRgba8(image::imageops::resize(
-        &dyn_img,
-        width,
-        height,
-        sampling_filter,
-    ));
-
-    // TODO Check if in browser or Node.JS
-    let document = web_sys::window().unwrap().document().unwrap();
-    let canvas = document
-        .create_element("canvas")
-        .unwrap()
-        .dyn_into::<web_sys::HtmlCanvasElement>()
-        .unwrap();
-
-    canvas.set_width(resized_img.width());
-    canvas.set_height(resized_img.height());
-
-    let new_img_data = ImageData::new_with_u8_clamped_array_and_sh(
-        Clamped(&mut resized_img.to_bytes()),
-        canvas.width(),
-        canvas.height(),
-    );
-
-    let ctx = canvas
-        .get_context("2d")
-        .unwrap()
-        .unwrap()
-        .dyn_into::<web_sys::CanvasRenderingContext2d>()
-        .unwrap();
-
-    // Place the new imagedata onto the canvas
-    ctx.put_image_data(&new_img_data.unwrap(), 0.0, 0.0)
-        .unwrap();
-
-    canvas
-}
-
 /// Resize an image.
 ///
 /// # Arguments
@@ -246,7 +149,7 @@ pub fn resize_img_browser(
 /// * `width` - New width.
 /// * `height` - New height.
 /// * `sampling_filter` - Nearest = 1, Triangle = 2, CatmullRom = 3, Gaussian = 4, Lanczos3 = 5
-#[wasm_bindgen]
+
 pub fn resize(
     photon_img: &PhotonImage,
     width: u32,
@@ -290,7 +193,7 @@ pub fn resize(
 /// let img = open_image("img.jpg").expect("File should open");
 /// let result: PhotonImage = seam_carve(&img, 100_u32, 100_u32);
 /// ```
-#[wasm_bindgen]
+
 pub fn seam_carve(img: &PhotonImage, width: u32, height: u32) -> PhotonImage {
     let mut img: RgbaImage = ImageBuffer::from_raw(
         img.get_width(),
@@ -342,7 +245,7 @@ pub fn seam_carve(img: &PhotonImage, width: u32, height: u32) -> PhotonImage {
 /// let rgba = Rgba::new(200_u8, 100_u8, 150_u8, 255_u8);
 /// padding_uniform(&img, 10_u32, rgba);
 /// ```
-#[wasm_bindgen]
+
 pub fn padding_uniform(
     img: &PhotonImage,
     padding: u32,
@@ -407,7 +310,7 @@ pub fn padding_uniform(
 /// let rgba = Rgba::new(200_u8, 100_u8, 150_u8, 255_u8);
 /// padding_left(&img, 10_u32, rgba);
 /// ```
-#[wasm_bindgen]
+
 pub fn padding_left(img: &PhotonImage, padding: u32, padding_rgba: Rgba) -> PhotonImage {
     let image_buffer = img.get_raw_pixels();
     let img_width = img.get_width();
@@ -453,7 +356,7 @@ pub fn padding_left(img: &PhotonImage, padding: u32, padding_rgba: Rgba) -> Phot
 /// let rgba = Rgba::new(200_u8, 100_u8, 150_u8, 255_u8);
 /// padding_right(&img, 10_u32, rgba);
 /// ```
-#[wasm_bindgen]
+
 pub fn padding_right(
     img: &PhotonImage,
     padding: u32,
@@ -502,7 +405,7 @@ pub fn padding_right(
 /// let rgba = Rgba::new(200_u8, 100_u8, 150_u8, 255_u8);
 /// padding_top(&img, 10_u32, rgba);
 /// ```
-#[wasm_bindgen]
+
 pub fn padding_top(img: &PhotonImage, padding: u32, padding_rgba: Rgba) -> PhotonImage {
     let image_buffer = img.get_raw_pixels();
     let img_width = img.get_width();
@@ -547,7 +450,7 @@ pub fn padding_top(img: &PhotonImage, padding: u32, padding_rgba: Rgba) -> Photo
 /// let rgba = Rgba::new(200_u8, 100_u8, 150_u8, 255_u8);
 /// padding_bottom(&img, 10_u32, rgba);
 /// ```
-#[wasm_bindgen]
+
 pub fn padding_bottom(
     img: &PhotonImage,
     padding: u32,

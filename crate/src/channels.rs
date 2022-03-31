@@ -8,7 +8,7 @@ use crate::helpers;
 use crate::iter::ImageIterator;
 use crate::{PhotonImage, Rgb};
 use palette::{Hue, Lab, Lch, Saturate, Shade, Srgb, Srgba};
-use wasm_bindgen::prelude::*;
+
 
 /// Alter a select channel by incrementing or decrementing its value by a constant.
 ///
@@ -42,7 +42,7 @@ use wasm_bindgen::prelude::*;
 /// alter_channel(&mut img, 1_usize, -20_i16);
 /// ```
 /// **Note**: Note the use of a minus symbol when decreasing the channel.
-#[wasm_bindgen]
+
 pub fn alter_channel(img: &mut PhotonImage, channel: usize, amt: i16) {
     if channel > 2 {
         panic!("Invalid channel index passed. Channel must be 0, 1, or 2 (Red=0, Green=1, Blue=2)");
@@ -74,7 +74,7 @@ pub fn alter_channel(img: &mut PhotonImage, channel: usize, amt: i16) {
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// alter_red_channel(&mut img, 10_i16);
 /// ```
-#[wasm_bindgen]
+
 pub fn alter_red_channel(photon_image: &mut PhotonImage, amt: i16) {
     alter_channel(photon_image, 0, amt)
 }
@@ -95,7 +95,7 @@ pub fn alter_red_channel(photon_image: &mut PhotonImage, amt: i16) {
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// alter_green_channel(&mut img, 20_i16);
 /// ```
-#[wasm_bindgen]
+
 pub fn alter_green_channel(img: &mut PhotonImage, amt: i16) {
     alter_channel(img, 1, amt)
 }
@@ -116,7 +116,7 @@ pub fn alter_green_channel(img: &mut PhotonImage, amt: i16) {
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// alter_blue_channel(&mut img, 10_i16);
 /// ```
-#[wasm_bindgen]
+
 pub fn alter_blue_channel(img: &mut PhotonImage, amt: i16) {
     alter_channel(img, 2, amt)
 }
@@ -140,7 +140,7 @@ pub fn alter_blue_channel(img: &mut PhotonImage, amt: i16) {
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// alter_two_channels(&mut img, 0_usize, 10_i16, 2_usize, 20_i16);
 /// ```
-#[wasm_bindgen]
+
 pub fn alter_two_channels(
     img: &mut PhotonImage,
     channel1: usize,
@@ -190,7 +190,7 @@ pub fn alter_two_channels(
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// alter_channels(&mut img, 10_i16, 20_i16, 50_i16);
 /// ```
-#[wasm_bindgen]
+
 pub fn alter_channels(img: &mut PhotonImage, r_amt: i16, g_amt: i16, b_amt: i16) {
     if r_amt > 255 {
         panic!("Invalid r_amt passed. Amount to inc/dec channel by should be between -255 and 255");
@@ -233,7 +233,7 @@ pub fn alter_channels(img: &mut PhotonImage, r_amt: i16, g_amt: i16, b_amt: i16)
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// remove_channel(&mut img, 0_usize, 100_u8);
 /// ```
-#[wasm_bindgen]
+
 pub fn remove_channel(img: &mut PhotonImage, channel: usize, min_filter: u8) {
     if channel > 2 {
         panic!("Invalid channel index passed. Channel must be equal to 0, 1, or 2.");
@@ -262,7 +262,7 @@ pub fn remove_channel(img: &mut PhotonImage, channel: usize, min_filter: u8) {
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// remove_red_channel(&mut img, 50_u8);
 /// ```
-#[wasm_bindgen]
+
 pub fn remove_red_channel(img: &mut PhotonImage, min_filter: u8) {
     remove_channel(img, 0, min_filter)
 }
@@ -283,7 +283,7 @@ pub fn remove_red_channel(img: &mut PhotonImage, min_filter: u8) {
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// remove_green_channel(&mut img, 50_u8);
 /// ```
-#[wasm_bindgen]
+
 pub fn remove_green_channel(img: &mut PhotonImage, min_filter: u8) {
     remove_channel(img, 1, min_filter)
 }
@@ -304,7 +304,7 @@ pub fn remove_green_channel(img: &mut PhotonImage, min_filter: u8) {
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// remove_blue_channel(&mut img, 50_u8);
 /// ```
-#[wasm_bindgen]
+
 pub fn remove_blue_channel(img: &mut PhotonImage, min_filter: u8) {
     remove_channel(img, 2, min_filter)
 }
@@ -326,7 +326,7 @@ pub fn remove_blue_channel(img: &mut PhotonImage, min_filter: u8) {
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// swap_channels(&mut img, 0_usize, 2_usize);
 /// ```
-#[wasm_bindgen]
+
 pub fn swap_channels(img: &mut PhotonImage, mut channel1: usize, mut channel2: usize) {
     if channel1 > 2 {
         panic!("Invalid channel index passed. Channel1 must be equal to 0, 1, or 2.");
@@ -360,7 +360,7 @@ pub fn swap_channels(img: &mut PhotonImage, mut channel1: usize, mut channel2: u
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// invert(&mut img);
 /// ```
-#[wasm_bindgen]
+
 pub fn invert(photon_image: &mut PhotonImage) {
     let end = photon_image.get_raw_pixels().len() - 4;
 
@@ -397,7 +397,7 @@ pub fn invert(photon_image: &mut PhotonImage) {
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// selective_hue_rotate(&mut img, ref_color, 180_f32);
 /// ```
-#[wasm_bindgen]
+
 pub fn selective_hue_rotate(
     mut photon_image: &mut PhotonImage,
     ref_color: Rgb,
@@ -453,7 +453,7 @@ pub fn selective_hue_rotate(
     photon_image.raw_pixels = img.to_vec();
 }
 
-// #[wasm_bindgen]
+//
 // pub fn selective_color_convert(mut photon_image: &mut PhotonImage, ref_color:Rgb, new_color:Rgb, fraction: f32) {
 //     let img = helpers::dyn_image_from_raw(photon_image);
 //     let (_width, _height) = img.dimensions();
@@ -545,7 +545,7 @@ pub fn selective_hue_rotate(
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// selective_lighten(&mut img, ref_color, 0.2_f32);
 /// ```
-#[wasm_bindgen]
+
 pub fn selective_lighten(img: &mut PhotonImage, ref_color: Rgb, amt: f32) {
     selective(img, "lighten", ref_color, amt)
 }
@@ -572,7 +572,7 @@ pub fn selective_lighten(img: &mut PhotonImage, ref_color: Rgb, amt: f32) {
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// selective_desaturate(&mut img, ref_color, 0.1_f32);
 /// ```
-#[wasm_bindgen]
+
 pub fn selective_desaturate(img: &mut PhotonImage, ref_color: Rgb, amt: f32) {
     selective(img, "desaturate", ref_color, amt)
 }
@@ -599,7 +599,7 @@ pub fn selective_desaturate(img: &mut PhotonImage, ref_color: Rgb, amt: f32) {
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// selective_saturate(&mut img, ref_color, 0.1_f32);
 /// ```
-#[wasm_bindgen]
+
 pub fn selective_saturate(img: &mut PhotonImage, ref_color: Rgb, amt: f32) {
     selective(img, "saturate", ref_color, amt);
 }
@@ -691,7 +691,7 @@ fn selective(
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// selective_greyscale(img, ref_color);
 /// ```
-#[wasm_bindgen]
+
 pub fn selective_greyscale(mut photon_image: PhotonImage, ref_color: Rgb) {
     let mut img = helpers::dyn_image_from_raw(&photon_image);
 

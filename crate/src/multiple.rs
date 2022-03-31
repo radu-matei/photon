@@ -7,7 +7,6 @@ use image::DynamicImage::ImageRgba8;
 use image::Pixel as ImagePixel;
 use image::{DynamicImage, GenericImageView, RgbaImage};
 use palette::{Blend, Gradient, Lab, Lch, LinSrgba, Srgb, Srgba};
-use wasm_bindgen::prelude::*;
 
 /// Add a watermark to an image.
 ///
@@ -27,7 +26,7 @@ use wasm_bindgen::prelude::*;
 /// let water_mark = open_image("watermark.jpg").expect("File should open");
 /// watermark(&mut img, &water_mark, 30_u32, 40_u32);
 /// ```
-#[wasm_bindgen]
+
 pub fn watermark(mut img: &mut PhotonImage, watermark: &PhotonImage, x: u32, y: u32) {
     let dyn_watermark: DynamicImage = crate::helpers::dyn_image_from_raw(watermark);
     let mut dyn_img: DynamicImage = crate::helpers::dyn_image_from_raw(img);
@@ -58,7 +57,7 @@ pub fn watermark(mut img: &mut PhotonImage, watermark: &PhotonImage, x: u32, y: 
 /// let img2 = open_image("img2.jpg").expect("File should open");
 /// blend(&mut img, &img2, "multiply");
 /// ```
-#[wasm_bindgen]
+
 pub fn blend(
     mut photon_image: &mut PhotonImage,
     photon_image2: &PhotonImage,
@@ -136,7 +135,7 @@ pub fn blend(
     photon_image.raw_pixels = dynimage.to_bytes();
 }
 
-// #[wasm_bindgen]
+//
 // pub fn blend_img_browser(
 //     source_canvas: HtmlCanvasElement,
 //     overlay_img: HtmlImageElement,
@@ -212,7 +211,6 @@ pub fn replace_background(
     photon_image.raw_pixels = raw_pixels;
 }
 
-#[wasm_bindgen]
 pub fn create_gradient(width: u32, height: u32) -> PhotonImage {
     let mut image = RgbaImage::new(width, height);
 
@@ -258,7 +256,7 @@ pub fn create_gradient(width: u32, height: u32) -> PhotonImage {
 }
 
 /// Apply a gradient to an image.
-#[wasm_bindgen]
+
 pub fn apply_gradient(image: &mut PhotonImage) {
     let gradient = create_gradient(image.width, image.height);
 

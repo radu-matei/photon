@@ -58,4 +58,4 @@ function filterImage(event) {
   }
 ```
 
-Not all functions available in the core Rust library are available in WebAssembly (currently investigating this). Only WASM-friendly functions have been annotated with #[wasm_bindgen]. All supported WASM functions are displayed in the starter demo. 
+Not all functions available in the core Rust library are available in WebAssembly (currently investigating this). Only WASM-friendly functions have been annotated with . All supported WASM functions are displayed in the starter demo. 

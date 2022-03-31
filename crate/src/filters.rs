@@ -5,7 +5,6 @@ use crate::colour_spaces::mix_with_colour;
 use crate::effects::{adjust_contrast, inc_brightness};
 use crate::monochrome;
 use crate::{PhotonImage, Rgb};
-use wasm_bindgen::prelude::*;
 
 /// Solarization on the Blue channel.
 ///
@@ -20,7 +19,7 @@ use wasm_bindgen::prelude::*;
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// neue(&mut img);
 /// ```
-#[wasm_bindgen]
+
 pub fn neue(photon_image: &mut PhotonImage) {
     let end = photon_image.get_raw_pixels().len() - 4;
 
@@ -45,7 +44,7 @@ pub fn neue(photon_image: &mut PhotonImage) {
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// lix(&mut img);
 /// ```
-#[wasm_bindgen]
+
 pub fn lix(photon_image: &mut PhotonImage) {
     let end = photon_image.get_raw_pixels().len() - 4;
 
@@ -71,7 +70,7 @@ pub fn lix(photon_image: &mut PhotonImage) {
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// ryo(&mut img);
 /// ```
-#[wasm_bindgen]
+
 pub fn ryo(photon_image: &mut PhotonImage) {
     let end = photon_image.get_raw_pixels().len() - 4;
 
@@ -114,7 +113,7 @@ pub fn ryo(photon_image: &mut PhotonImage) {
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// filter(&mut img, "vintage");
 /// ```
-#[wasm_bindgen]
+
 pub fn filter(img: &mut PhotonImage, filter_name: &str) {
     let oceanic_rgb = Rgb::new(0, 89, 173);
     let islands_rgb = Rgb::new(0, 24, 95);
@@ -168,7 +167,7 @@ pub fn filter(img: &mut PhotonImage, filter_name: &str) {
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// lofi(&mut img);
 /// ```
-#[wasm_bindgen]
+
 pub fn lofi(img: &mut PhotonImage) {
     adjust_contrast(img, 30.0);
     colour_spaces::saturate_hsl(img, 0.2);
@@ -187,7 +186,7 @@ pub fn lofi(img: &mut PhotonImage) {
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// pastel_pink(&mut img);
 /// ```
-#[wasm_bindgen]
+
 pub fn pastel_pink(img: &mut PhotonImage) {
     let pastel_pink_rgb = Rgb::new(220, 112, 170);
     mix_with_colour(img, pastel_pink_rgb, 0.1);
@@ -207,7 +206,7 @@ pub fn pastel_pink(img: &mut PhotonImage) {
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// golden(&mut img);
 /// ```
-#[wasm_bindgen]
+
 pub fn golden(img: &mut PhotonImage) {
     let vignette_rgb = Rgb::new(235, 145, 50);
     mix_with_colour(img, vignette_rgb, 0.2);
@@ -227,7 +226,7 @@ pub fn golden(img: &mut PhotonImage) {
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// cali(&mut img);
 /// ```
-#[wasm_bindgen]
+
 pub fn cali(img: &mut PhotonImage) {
     let cali_rgb = Rgb::new(255, 45, 75);
     colour_spaces::mix_with_colour(img, cali_rgb, 0.1);
@@ -247,7 +246,7 @@ pub fn cali(img: &mut PhotonImage) {
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// dramatic(&mut img);
 /// ```
-#[wasm_bindgen]
+
 pub fn dramatic(img: &mut PhotonImage) {
     monochrome::grayscale(img);
     adjust_contrast(img, 60.0);
@@ -266,7 +265,7 @@ pub fn dramatic(img: &mut PhotonImage) {
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// firenze(&mut img);
 /// ```
-#[wasm_bindgen]
+
 pub fn firenze(img: &mut PhotonImage) {
     let cali_rgb = Rgb::new(255, 47, 78);
     colour_spaces::mix_with_colour(img, cali_rgb, 0.1);
@@ -288,7 +287,7 @@ pub fn firenze(img: &mut PhotonImage) {
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// obsidian(&mut img);
 /// ```
-#[wasm_bindgen]
+
 pub fn obsidian(img: &mut PhotonImage) {
     monochrome::grayscale(img);
     adjust_contrast(img, 25.0);

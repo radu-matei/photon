@@ -4,7 +4,7 @@
 use image::DynamicImage::ImageRgba8;
 use image::{GenericImageView, ImageBuffer};
 use std::io;
-// use wasm_bindgen::prelude::*;
+// 
 use crate::PhotonImage;
 use thiserror::Error;
 

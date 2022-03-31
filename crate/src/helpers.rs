@@ -1,9 +1,8 @@
 //! Helper functions for converting between various formats
 
 use crate::{PhotonImage, Rgb};
-use image::{DynamicImage, ImageBuffer};
-extern crate wasm_bindgen;
 use image::DynamicImage::ImageRgba8;
+use image::{DynamicImage, ImageBuffer};
 
 /// Gets the square distance between two colours
 pub fn square_distance(color1: Rgb, color2: Rgb) -> i32 {

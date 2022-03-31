@@ -9,7 +9,7 @@ use imageproc::distance_transform::Norm;
 use imageproc::drawing::draw_text_mut;
 use imageproc::morphology::dilate_mut;
 use rusttype::{Font, Scale};
-use wasm_bindgen::prelude::*;
+
 
 /// Add bordered-text to an image.
 /// The only font available as of now is Roboto.
@@ -32,7 +32,7 @@ use wasm_bindgen::prelude::*;
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// draw_text_with_border(&mut img, "Welcome to Photon!", 10_u32, 10_u32);
 /// ```
-#[wasm_bindgen]
+
 pub fn draw_text_with_border(
     mut photon_img: &mut PhotonImage,
     text: &str,
@@ -107,7 +107,7 @@ pub fn draw_text_with_border(
 /// let mut img = open_image("img.jpg").expect("File should open");
 /// draw_text(&mut img, "Welcome to Photon!", 10_u32, 10_u32);
 /// ```
-#[wasm_bindgen]
+
 pub fn draw_text(mut photon_img: &mut PhotonImage, text: &str, x: u32, y: u32) {
     let mut image = helpers::dyn_image_from_raw(photon_img).to_rgba8();
 
